@@ -1,0 +1,8 @@
+# VSVVC Display server support
+# VcXsrv should be installed on host
+export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
+export LIBGL_ALWAYS_INDIRECT=1
+# PULSE AUDIO SUPPORT
+# pulseaudio.exe should be installed on host
+export PULSE_SERVER=tcp:$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}')
+~/.zsh/pulseaudio-daemon.sh

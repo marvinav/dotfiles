@@ -1,0 +1,61 @@
+if [ -z "$VSCODE_PID" ]; then
+    export NVM_COMPLETION=true
+    export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim')
+    export NVM_LAZY_LOAD=true ;
+fi
+
+if [[ ! -z $IS_VS_CODE ]]; then
+  echo 'VSCode launced'
+  # This prevent some errors then run VSCode
+  source ~/.zsh-nvm/zsh-nvm.plugin.zsh
+elif command -v tmux >/dev/null 2>&1; then
+  # Default tmux session
+  # Attach to last session
+  # [ -z "${TMUX}" ] && (tmux attach >/dev/null 2>&1 || tmux)
+  # Open in new session
+  if [ -z "${TMUX}" ]; then
+    TMUX_SESSION_CREATION_TIME="$(date -u +"%Y-%m-%dT%H-%M-%S")"
+    tmux new -s $TMUX_SESSION_CREATION_TIME
+  fi
+fi
+
+if [ -e "$HOME/.zsh-nvm/zsh-nvm.plugin.zsh" ]; then
+ source ~/.zsh-nvm/zsh-nvm.plugin.zsh
+fi
+
+if command -v trash-put &> /dev/null; then
+  alias rm="trash-put"
+  TRASH_FILES=$(trash-list | wc -l)
+  if [[ $TRASH_FILES -gt 50 ]] && [[ $TRASH_FILES -lt 150 ]]; then
+    echo "Your trash bin contains $TRASH_FILES elements."
+  elif [[ $TRASH_FILES -ge 150 ]]; then
+    echo "Warning! Your trash bin contains $TRASH_FILES elements."
+  fi
+fi
+
+if command -v fdfind &> /dev/null; then
+  alias fd=fdfind
+fi
+
+zstyle ':prompt:grml:left:setup' items rc change-root user at host path vcs newline percent
+
+autoload -U colors && colors
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr '!'
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:git*' formats "%{${fg[cyan]}%}[%{${fg[blue]}%}%b%{${fg[yellow]}%}%m%u%c%{${fg[cyan]}%}]%{$reset_color%}"
+
+# Detect if zsh session run under WSL in Windows
+if [[ $(uname -srm) =~ "microsoft" ]]; then
+  export ISWSLRUN=true
+fi
+
+alias sshcm="~/.zsh/clipboard-daemon.sh"
+
+# Add To Path custom-scripts folder for convient
+export PATH=$PATH:$HOME/dotfiles/custom-scripts
+
+if [ -e "${HOME}/.profile" ]; then
+  source ${HOME}/.profile
+fi
