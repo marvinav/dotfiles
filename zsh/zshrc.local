@@ -59,3 +59,10 @@ export PATH=$PATH:$HOME/dotfiles/custom-scripts
 if [ -e "${HOME}/.profile" ]; then
   source ${HOME}/.profile
 fi
+
+if [ -e "${HOME}/.zsh/zshrc.d" ] && [ "$(ls -A ${HOME}/.zsh/zshrc.d)" ]; then
+  for file in ${HOME}/.zsh/zshrc.d/*; do 
+      echo "file $file"
+      source $file
+  done
+fi
