@@ -4,6 +4,12 @@ if [ -z "$VSCODE_PID" ]; then
     export NVM_LAZY_LOAD=true ;
 fi
 
+if (( ${+commands[fbterm]} )); then
+  if [[ "$TTY" = /dev/tty6 ]] ; then
+    sudo fbterm -n "monospace" -s 14 -- sudo -i -u $USER TERM=fbterm && exit
+  fi
+fi
+
 if [[ ! -z $IS_VS_CODE ]]; then
   echo 'VSCode launced'
   # This prevent some errors then run VSCode
@@ -61,8 +67,8 @@ if [ -e "${HOME}/.profile" ]; then
 fi
 
 if [ -e "${HOME}/.zsh/zshrc.d" ] && [ "$(ls -A ${HOME}/.zsh/zshrc.d)" ]; then
-  for file in ${HOME}/.zsh/zshrc.d/*; do 
-      echo "file $file"
+  for file in ${HOME}/.zsh/zshrc.d/*; do
+      echo "Source file $file"
       source $file
   done
 fi
