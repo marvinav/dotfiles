@@ -13,4 +13,5 @@ chafa caca-utils `#To Show image as ANSI sequence` \
 trash-cli `#Cool wrapper for rm with restore function` \
 jq `#JSON preprocessor` \
 tldr `#Short description and most often usage of commands` \
-net-tools 
+net-tools \
+xsel `#Copy utility to integrate tmux-yank with X or W session`
