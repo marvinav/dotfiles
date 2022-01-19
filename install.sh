@@ -50,7 +50,7 @@ at default location: \$HOME/.zsh-nvm. To use nvm install it first.\n"
 }
 
 # ####################################################################### #
-# NVM installation                                                        #
+# NVM installation (deprecated)                                           #
 # ####################################################################### #
 nvm_install(){
   echo "NVM installation"
@@ -61,6 +61,32 @@ at default location: \$HOME/.zsh-nvm. Remove it first.\n"
     printf "WARNING: \"node\" already installed. Remove it first.\n"
   else
     git clone https://github.com/lukechilds/zsh-nvm.git ~/.zsh-nvm
+  fi
+  echo "NVM installation completed";
+}
+
+# ####################################################################### #
+# n installation                                                        #
+# ####################################################################### #
+n_install(){
+  echo "n installation"
+  if [ -e "$HOME/.zsh-nvm/zsh-nvm.plugin.zsh" ]; then
+    printf "WARNING: Zsh-nvm plugin already installed \
+at default location: \$HOME/.zsh-nvm. Remove it first.\n"
+  elif is_app_installed node; then
+    printf "WARNING: \"node\" already installed. Remove it first.\n"
+  elif [ -d "$HOME/.nvm" ]; then
+    printf "WARNING: \"nvm\" already installed. Remove it first.\n"
+  elif [ -d "$HOME/.n" ]; then
+    printf "WARNING: \"n\" already installed. Remove it first.\n"
+  else
+    mkdir $HOME/.n
+    export N_PREFIX=$HOME/.n
+    PATH=$PATH:~/.n/bin
+    curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
+    bash n lts
+    npm install -g n
+    rm n
   fi
   echo "NVM installation completed";
 }
@@ -125,11 +151,11 @@ tmux_install() {
 while getopts anztvo opts;
 do
   case $opts in
-    a) zsh_install
+    d) zsh_install
       tmux_install
       vim_install
       exit 0;;
-    n) nvm_install;;
+    n) n_install;;
     z) zsh_install;;
     t) tmux_install;;
     v) vim_install;;

@@ -1,7 +1,20 @@
-if [ -z "$VSCODE_PID" ]; then
+if [ -d "$HOME/.nvm" ]; then
+  if [[ -z $IS_VS_CODE ]]; then
+    if [ -e "$HOME/.zsh-nvm" ]; then
+      echo 'VSCode nvm sourced';
+      source ~/.zsh-nvm/zsh-nvm.plugin.zsh
+    fi
+  fi
+  if [ -z "$VSCODE_PID" ]; then
     export NVM_COMPLETION=true
     export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim')
     export NVM_LAZY_LOAD=true ;
+  fi
+fi
+
+if [ -d "$HOME/.n" ]; then
+  export N_PREFIX=$HOME/.n
+  export PATH=$N_PREFIX/bin:$PATH
 fi
 
 if (( ${+commands[fbterm]} )); then
@@ -11,9 +24,8 @@ if (( ${+commands[fbterm]} )); then
 fi
 
 if [[ ! -z $IS_VS_CODE ]]; then
-  echo 'VSCode launced'
+  echo 'Prevent tmux session'
   # This prevent some errors then run VSCode
-  source ~/.zsh-nvm/zsh-nvm.plugin.zsh
 elif command -v tmux >/dev/null 2>&1; then
   # Default tmux session
   # Attach to last session
