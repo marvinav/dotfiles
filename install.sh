@@ -45,7 +45,6 @@ Install fdfind first to use \"fdfind\" alias for \"fd\""
 at default location: \$HOME/.zsh-nvm. To use nvm install it first.\n"
   fi
 
-
   echo "ZSH installation completed"
 }
 
@@ -151,7 +150,8 @@ tmux_install() {
 while getopts anztvo opts;
 do
   case $opts in
-    d) zsh_install
+    d) n_install 
+      zsh_install
       tmux_install
       vim_install
       exit 0;;

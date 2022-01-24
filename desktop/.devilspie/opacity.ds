@@ -1,6 +1,0 @@
-(if
-( contains ( application_name ) "chromium" )
-( begin
-  ( spawn_async (str "transset-df -i " (window_xid) " 0.85" ))
-  )
-)
