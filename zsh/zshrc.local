@@ -1,3 +1,9 @@
+REPODIR="$(dirname "$(readlink -f "$0")")"
+BIN_DIR="$(readlink -f "$REPODIR/../bin")"
+
+# Add To Path bin folder for convient
+export PATH=$PATH:$BIN_DIR
+
 if [ -d "$HOME/.nvm" ]; then
   if [[ -z $IS_VS_CODE ]]; then
     if [ -e "$HOME/.zsh-nvm" ]; then
@@ -71,8 +77,7 @@ fi
 
 alias sshcm="~/.zsh/clipboard-daemon.sh"
 
-# Add To Path custom-scripts folder for convient
-export PATH=$PATH:$HOME/dotfiles/custom-scripts
+
 
 if [ -e "${HOME}/.profile" ]; then
   source ${HOME}/.profile

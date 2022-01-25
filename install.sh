@@ -25,11 +25,9 @@ zsh_install() {
           chsh --shell /bin/zsh
   fi
 
-
-  cp ./zsh/zshrc ~/.zshrc
-  cp ./zsh/zshrc.local ~/.zshrc.local
-  mkdir -p ~/.zsh
-  cp ./zsh/clipboard-daemon.sh ~/.zsh/
+  ln -sf "$REPODIR"/zsh/zshrc "$HOME"/.zshrc
+  ln -sf "$REPODIR"/zsh/zshrc.local "$HOME"/.zshrc.local
+  ln -sf "$REPODIR"/zsh "$HOME"/.zsh
 
   if ! is_app_installed trash-put; then
     printf "WARNING: \"trash-put\" command in not found. \
@@ -100,10 +98,15 @@ vim_install() {
       Install it first\n"
           exit 1
   fi
+  if [ -d "$HOME/.vim" ]; then
+    printf "\"vim\" configuration already installed. Backup created."
+    mv -f "$HOME/.vim" "$HOME/.vim.backup"
+  fi
+  ln -sf "$REPODIR"/vim "$HOME"/.vim
+  ln -sf "$REPODIR"/vim/.vimrc "$HOME"/.vimrc
+
   echo "Download Vim Plugin Tool"
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  cp ./vim/vimrc ~/.vimrc
-  cp ./vim/coc-settings.json ~/.vim/coc-settings.json
   echo "Install Vim plugins"
   vim +PlugInstall +qall +q
   echo "Vim installation completed"
@@ -119,19 +122,18 @@ tmux_install() {
           exit 1
   fi
 
+  if [ -e "$HOME/.tmux.conf" ]; then
+    printf "Found existing .tmux.conf in your \$HOME directory. Will create a backup at $HOME/.tmux.conf.bak\n"
+  fi
+
+  ln -sf "$REPODIR"/tmux "$HOME"/.tmux
+  ln -sf "$REPODIR"/tmux/tmux.conf "$HOME"/.tmux.conf;
+
   if [ ! -e "$HOME/.tmux/plugins/tpm" ]; then
     printf "WARNING: Cannot found TPM (Tmux Plugin Manager) \
       at default location: \$HOME/.tmux/plugins/tpm.\n"
           git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   fi
-
-  if [ -e "$HOME/.tmux.conf" ]; then
-    printf "Found existing .tmux.conf in your \$HOME directory. Will create a backup at $HOME/.tmux.conf.bak\n"
-  fi
-
-  cp -f "$HOME/.tmux.conf" "$HOME/.tmux.conf.bak" 2>/dev/null || true
-  cp -a ./tmux/. "$HOME"/.tmux/
-  ln -sf .tmux/tmux.conf "$HOME"/.tmux.conf;
 
   # Install TPM plugins.
   # TPM requires running tmux server, as soon as `tmux start-server` does not work
