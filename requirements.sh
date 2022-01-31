@@ -1,7 +1,6 @@
 # Install Required Dependencies
-echo 'Install required dependencies'
-apt update
-apt install htop tmux zsh vim git curl \
+apt-get update
+apt-get install -y htop tmux zsh vim git curl \
 fd-find `#.gitignore friendly find alternative` \
 ripgrep `#.gitignore friendly grep alternative` \
 mc `#FAR-like explorer` \

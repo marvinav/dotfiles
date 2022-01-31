@@ -13,6 +13,6 @@ usermod -aG ssh-team-list $SUDO_USER
 cat $REPODIR/ssh-team-list.conf | tee -a /etc/ssh/sshd_config
 systemctl restart sshd
 
-apt install fail2ban
+apt-get install -y fail2ban
 cp $REPODIR/jail.local /etc/fail2ban
 systemctl enable fail2ban

@@ -149,7 +149,7 @@ tmux_install() {
 #################################################################
 # Arguments parser 						#
 #################################################################
-while getopts anztvo opts;
+while getopts dnztvo opts;
 do
   case $opts in
     d) n_install 
