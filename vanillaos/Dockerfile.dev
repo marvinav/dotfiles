@@ -1,0 +1,14 @@
+#Specify a base image
+#Dockerfile image for create enviroment for development
+FROM ubuntu:22.04
+
+RUN apt-get update
+RUN apt-get install curl openssh-server git nodejs npm -y
+RUN npm install -g n
+RUN mkdir /home/developer
+RUN mkdir /home/developer/Source
+RUN touch /home/developer/.container-logs
+RUN echo 'root:1' | chpasswd
+RUN printf "PermitRootLogin yes\nStrictModes no" >> /etc/ssh/sshd_config 
+RUN service ssh restart
+CMD service ssh start && tail -F /home/developer/.container-logs
